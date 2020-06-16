@@ -35,6 +35,6 @@ In this model,i have built a machine learning pipeline which categorize emergenc
  To set up the model and database run these following commands 
 
    1. python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db  Used this command to       run ETL pipeline
-   2. python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl  Used to run ML pipeline
+   2. python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl  Used this command to run ML pipeline
 
  
