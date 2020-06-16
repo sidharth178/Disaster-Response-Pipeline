@@ -24,7 +24,7 @@ This repository is written in Python and HTML and some required Python packages 
   
  4. data: This folder contains categories datasets and sample messages .
 
- 5. app: This folder cointains the run.py which iniate the web app.
+ 5. app: This folder cointains the run.py which iniate the web app .
  
 ### Overview
 
