@@ -1,40 +1,57 @@
-# import all libraries here
+# import necessary libraries
 import sys
+import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
 
+
+# load data 
 def load_data(messages_filepath, categories_filepath):
-    ''' This is load data function which is used to load the data from files .
   
-    '''
-    messages = pd.read_csv(messages_filepath)
-    categories = pd.read_csv(categories_filepath)
-    df = pd.merge(messages, categories, left_on='id', right_on='id', how='outer')
-    return df
+  # load two csv files
+  messages = pd.read_csv(messages_filepath)
+  categories = pd.read_csv(categories_filepath)
+  return pd.merge(messages, categories, on='id', how='inner')
 
+
+# data pre-processing
 def clean_data(df):
-    ''' This is clean data function which helps in cleaning the data.'''
-    categories = df.categories.str.split(';', expand = True)
-    row = categories.loc[0]
-    category_colnames = row.apply(lambda x: x[:-2]).values.tolist()
-    categories.columns = category_colnames
-    categories.related.loc[categories.related == 'related-2'] = 'related-1'
-    for column in categories:
-        categories[column] = categories[column].astype(str).str[-1]
-        categories[column] = pd.to_numeric(categories[column])
-    df.drop('categories', axis = 1, inplace = True)
-    df = pd.concat([df, categories], axis = 1)
-    df.drop_duplicates(subset = 'id', inplace = True)
-    return df
 
-def save_data(df, database_filepath):
-    ''' This is save data function where we link the datafram to  the sqlite and save it in the database.'''
-    engine = create_engine('sqlite:///' + database_filepath)
-    df.to_sql('FigureEight', engine, index=False)
+  categories = df["categories"].str.split(';', expand=True)
+  # select the first row of the categories dataframe
+  row = categories[0:1]
+  # use this row to extract a list of new column names for categories.
+  category_col_names = row.apply(lambda x: x.str[:-2]).values.tolist()
+  # rename the columns of `categories` dataframe
+  categories.columns = category_col_names
+
+  # Convert category values to just numbers 0 or 1.
+  for column in categories:
+      # set each value to be the last character of the string
+      categories[column] = categories[column].str[-1]
+      # change column data type from string to numeric
+      categories[column] = categories[column].astype(int)
+
+  # drop the original categories column from `df`
+  df.drop('categories', axis=1, inplace = True)
+  # concatenate the original dataframe with the new `categories` dataframe
+  df = pd.concat([df, categories], axis=1)
+  # drop duplicates
+  df = df.drop_duplicates()
+  return df
+
+
+# save cleaned data  
+def save_data(df, database_filename):
+  
+  # save a dataframe to sqlite database
+  print('Save {} to {} database: '.format(df, database_filename))
+  engine = create_engine('sqlite:///{}'.format(database_filename))
+  df.to_sql('DisasterResponse', engine,if_exists = 'replace', index=False)
+
 
 def main():
-    ''' This is main data processing function which grab the paths of files .
-    '''
+  
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
@@ -43,16 +60,21 @@ def main():
               .format(messages_filepath, categories_filepath))
         df = load_data(messages_filepath, categories_filepath)
 
-
+        print('Cleaning data...')
         df = clean_data(df)
-
-
+        
+        print('Saving data...\n    DATABASE: {}'.format(database_filepath))
         save_data(df, database_filepath)
-
-        print('database saved!')
-
+        
+        print('Cleaned data saved to database!')
+    
     else:
-        print('Pmissing paths!')
+        print('Please provide the filepaths of the messages and categories '\
+              'datasets as the first and second argument respectively, as '\
+              'well as the filepath of the database to save the cleaned data '\
+              'to as the third argument. \n\nExample: python process_data.py '\
+              'disaster_messages.csv disaster_categories.csv '\
+              'DisasterResponse.db')
 
 
 if __name__ == '__main__':
