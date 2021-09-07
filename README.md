@@ -1,40 +1,50 @@
 # Disaster-Response-Pipelines
+## 📌**Demo**
+<p align="center">
+  <img src="App-demo-gif.gif"  width="900" height="500"/>
+</p>
 
-This is the third project of data science nanodegree program offered by udacity.
 
-### Libraries used
+## 📌**Objective**
+The objective of the project is to create a web application which will classify disaster messages.
+## 📁 **Data/File Description**
+- disaster_categories.csv - Contains the id, message that was sent and genre.
+- disaster_messages.csv - Contains the id and the categories (related, offer, medical assistance..) the message belonged to.
+- DisasterResponse.db - Database contain cleaned data
+- process_data.py - Used for data cleaning and pre-processing
+- train_classifier.py - Used to train the model
+- classifier.pkl - Trained model
+- run.py - To run Web App
 
-This repository is written in Python and HTML and some required Python packages given below .
+## 🔑**Prerequisites**
+All the required libraries are included in the file <code>requirements.txt</code>
 
- 1. Pandas
- 2. numpy
- 3. sklearn
- 4. sqlalchemy
- 5. flask
- 6. nltk
- 
- 
- ### Files 
- 
- 1. process_data.py : It is a data ETL pipeline
+## ⚠️**TechStack/framework used**
+- Machine Learning
+- Natural Language Processing
+- Random Forest
+- SQLite
+- ETL
+## 🚀Installation
+1. Go to Project's root directory
+2. Install required libraries
+```
+pip install -r requirements.txt
+```
+3. To run ETL Pipeline that clean and store data
+```
+python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+```
+4. To run ML pipeline that trains the classifier model
+```
+python model/train_classifier.py data/DisasterResponse.db model/classifier.pkl
+```
+5. You can download the pre-trained model [here](https://drive.google.com/file/d/1bedkXCUKFGuCZ_rXi7O1RZJCRDoWKXEC/view?usp=sharing)
 
- 2. train_classifier.py : This is a machine learning pipeline
+## ❤️**Owner**
+Made With ❤️ by [Sidharth kumar mohanty](www.linkedin.com/in/sidharth178)
 
- 3. run.py : This is a Flask web app
-  
- 4. data: This folder contains categories datasets and sample messages .
+## 😖Troubleshoot
+Any issues??? Feel free to ask.[Linkedin](www.linkedin.com/in/sidharth178)
 
- 5. app: This folder cointains the run.py which iniate the web app .
- 
-### Overview
-
- The main goal of this project is to make a web app which is an emergency operator that could be exploit in some emergency time like earthquake and tsunami . This web app classify the disaster text message and transmit it to the responsible entity .
-In this model,i have built a machine learning pipeline which categorize emergency text messages from the sender.
-
-### Instructions
- To set up the model and database run these following commands 
-
-   1. python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db  Used this command to       run ETL pipeline
-   2. python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl  Used this command to run ML pipeline
-
- 
+If you find this repo useful,don't forget to give a ⭐
