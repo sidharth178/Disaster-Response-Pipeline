@@ -27,7 +27,7 @@ All the required libraries are included in the file <code>requirements.txt</code
 - ETL
 ## 🚀Installation
 1. Go to Project's root directory
-2. Install required libraries
+2. Install required libraries.
 ```
 pip install -r requirements.txt
 ```
